@@ -66,7 +66,7 @@ describe('Github Deployment Status | configure hook', function() {
       };
     });
 
-    ['token', 'payload', 'targetUrl'].forEach(function(prop) {
+    ['token', 'payload', 'targetUrl', 'deploymentId'].forEach(function(prop) {
       it('provides default ' + prop, function() {
         var instance = subject.createDeployPlugin({
           name: 'github-deployment-status'
