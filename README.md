@@ -112,6 +112,15 @@ only needed if the repo is "private". The access token must have either the
 
 *Default:* `null`
 
+### deploymentId
+
+The ID of a github deployment that has been created outside of ember-cli-deploy.
+You might use this if you have some other system that has created the the deployment and kicked off ember-cli-deploy and you merely want this plugin to update the deployment status.
+
+If this property does not exist, this plugin will create the deployment as well.
+
+*Default:* `null`
+
 ### targetUrl
 
 The target URL to associate with this status. This URL should contain output to

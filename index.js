@@ -22,6 +22,7 @@ module.exports = {
         payload: null,
         environment: 'production',
         targetUrl: null,
+        deploymentId: null
       },
 
       setup: function(context) {
@@ -30,57 +31,65 @@ module.exports = {
       },
 
       willDeploy: function(context) {
-        var pluginName  = this.name;
-        var token       = this.readConfig('token');
-        var org         = this.readConfig('org');
-        var repo        = this.readConfig('repo');
-        var ref         = this.readConfig('ref');
-        var environment = this.readConfig('environment');
-        var autoMerge   = this.readConfig('autoMerge');
-        var contexts    = this.readConfig('requiredContexts');
-        var payload     = this.readConfig('payload');
+        var pluginName   = this.name;
+        var token        = this.readConfig('token');
+        var org          = this.readConfig('org');
+        var repo         = this.readConfig('repo');
+        var ref          = this.readConfig('ref');
+        var environment  = this.readConfig('environment');
+        var autoMerge    = this.readConfig('autoMerge');
+        var contexts     = this.readConfig('requiredContexts');
+        var payload      = this.readConfig('payload');
 
-        var client = context[pluginName]._client;
+        var deploymentId = this.readConfig('deploymentId');
+        var promise;
 
-        var body = {
-          ref: ref,
-          auto_merge: autoMerge,
-          required_contexts: contexts,
-          environment: environment,
-          description: 'Deploying'
-        };
+        if (deploymentId) {
+          promise = Promise.resolve({ id: deploymentId });
+        } else {
+          var client = context[pluginName]._client;
 
-        if (payload) {
-          body.payload = payload;
+          var body = {
+            ref: ref,
+            auto_merge: autoMerge,
+            required_contexts: contexts,
+            environment: environment,
+            description: 'Deploying'
+          };
+
+          if (payload) {
+            body.payload = payload;
+          }
+
+          var options = {
+            method: 'POST',
+            uri: 'https://api.github.com/repos/' + org + '/' + repo + '/deployments',
+            headers: {
+              'User-Agent': org
+            },
+            body: body,
+            json: true
+          };
+
+          if (token) {
+            options.qs = { access_token: token };
+          }
+
+          promise = client.request(options);
         }
 
-        var options = {
-          method: 'POST',
-          uri: 'https://api.github.com/repos/' + org + '/' + repo + '/deployments',
-          headers: {
-            'User-Agent': org
-          },
-          body: body,
-          json: true
-        };
+        return promise.then(function(data) {
+          var response = {};
+          response[pluginName] = { deploymentId: data.id };
 
-        if (token) {
-          options.qs = { access_token: token };
-        }
+          return response;
+        }, function(reason) {
+          this.log('Error creating github deployment: ' + reason, { verbose: true, color: 'yellow'});
+          var response = {};
+          response[pluginName] = { deploymentId: null };
 
-        return client.request(options)
-          .then(function(data) {
-            var response = {};
-            response[pluginName] = { deploymentId: data.id };
-
-            return response;
-          }, function(reason) {
-            this.log('Error creating github deployment: ' + reason, { verbose: true, color: 'yellow'});
-            var response = {};
-            response[pluginName] = { deploymentId: null };
-
-            return response;
-          }.bind(this));
+          return response;
+        }.bind(this));
       },
 
       didDeploy: function(context) {
