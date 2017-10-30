@@ -3,7 +3,7 @@
 
 var BasePlugin = require('ember-cli-deploy-plugin');
 
-var Promise = require('ember-cli/lib/ext/promise');
+var Promise = require('rsvp').Promise;
 
 module.exports = {
   name: 'ember-cli-deploy-github-deployment-status',
