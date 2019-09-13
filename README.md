@@ -123,12 +123,18 @@ If this property does not exist, this plugin will create the deployment as well.
 
 ### targetUrl
 
-The target URL to associate with this status. This URL should contain output to
+The target URL to associate with this status. This URL can be a string or a function.  If you choose a function, the function will get passed the context.  This URL should contain output to
 keep the user updated while the task is running or serve as historical
 information for what happened in the deployment. See the [GitHub docs][4] for
 more info.
 
 *Default:* `null`
+
+```
+targetUrl: 'https://target-url-example.com',
+-- OR --
+targetUrl(context) { `https://target-url-example.com/${context.revisionData.revisionKey}`; },
+```
 
 ### task
 

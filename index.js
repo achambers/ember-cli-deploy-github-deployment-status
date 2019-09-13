@@ -98,7 +98,7 @@ module.exports = {
 
         var client = context[pluginName]._client;
 
-        return this._updateDeployment.call(this, id, 'success', 'Deployed successfully', client);
+        return this._updateDeployment.call(this, id, 'success', 'Deployed successfully', client, context);
       },
 
       didFail: function(context) {
@@ -107,10 +107,10 @@ module.exports = {
 
         var client = context[pluginName]._client;
 
-        return this._updateDeployment.call(this, id, 'failure', 'Deploy failed', client);
+        return this._updateDeployment.call(this, id, 'failure', 'Deploy failed', client, context);
       },
 
-      _updateDeployment: function(id, state, description, client) {
+      _updateDeployment: function(id, state, description, client, context) {
         var token       = this.readConfig('token');
         var org         = this.readConfig('org');
         var repo        = this.readConfig('repo');
@@ -120,7 +120,7 @@ module.exports = {
           var body = { state: state, description: description };
 
           if (targetUrl) {
-            body.target_url = targetUrl;
+            body.target_url = typeof targetUrl === 'function' ? targetUrl(context) : targetUrl;
           }
 
           var options = {
