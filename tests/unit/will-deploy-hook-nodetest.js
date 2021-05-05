@@ -93,8 +93,7 @@ describe('Github Deployment Status | willDeploy hook', function() {
           assert.equal(options.uri,'https://api.github.com/repos/foo/bar/deployments');
           assert.equal(options.method, 'POST');
           assert.equal(options.json, true);
-          assert.deepEqual(options.qs, { access_token: 'token' });
-          assert.deepEqual(options.headers, { 'User-Agent': 'foo' });
+          assert.deepEqual(options.headers, { 'User-Agent': 'foo', 'Authorization': 'token token' });
           assert.deepEqual(options.body, {
             ref: 'baz',
             auto_merge: false,

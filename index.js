@@ -61,19 +61,21 @@ module.exports = {
             body.payload = payload;
           }
 
-          var options = {
-            method: 'POST',
-            uri: 'https://api.github.com/repos/' + org + '/' + repo + '/deployments',
-            headers: {
-              'User-Agent': org
-            },
-            body: body,
-            json: true
+          var headers = {
+            'User-Agent': org
           };
 
           if (token) {
-            options.qs = { access_token: token };
+            headers['Authorization'] = 'token ' + token;
           }
+
+          var options = {
+            method: 'POST',
+            uri: 'https://api.github.com/repos/' + org + '/' + repo + '/deployments',
+            headers: headers,
+            body: body,
+            json: true
+          };
 
           promise = client.request(options);
         }
@@ -123,21 +125,21 @@ module.exports = {
             body.target_url = targetUrl;
           }
 
-          var options = {
-
-            method: 'POST',
-            uri: 'https://api.github.com/repos/' + org + '/' + repo + '/deployments/' + id + '/statuses',
-            headers: {
-              'User-Agent': org
-            },
-            body: body,
-            json: true
+          var headers = {
+            'User-Agent': org
           };
 
           if (token) {
-            options.qs = { access_token: token };
+            headers['Authorization'] = 'token ' + token;
           }
 
+          var options = {
+            method: 'POST',
+            uri: 'https://api.github.com/repos/' + org + '/' + repo + '/deployments/' + id + '/statuses',
+            headers: headers,
+            body: body,
+            json: true
+          };
           return client.request(options);
         }
 

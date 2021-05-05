@@ -57,8 +57,7 @@ describe('Github Deployment Status | didDeploy hook', function() {
         assert.equal(options.uri,'https://api.github.com/repos/foo/bar/deployments/123/statuses');
         assert.equal(options.method, 'POST');
         assert.equal(options.json, true);
-        assert.deepEqual(options.qs, { access_token: 'token' });
-        assert.deepEqual(options.headers, { 'User-Agent': 'foo' });
+        assert.deepEqual(options.headers, { 'User-Agent': 'foo', 'Authorization': 'token token' });
         assert.deepEqual(options.body, {
           state: 'success',
           target_url: 'https://ember-cli-deploy.com',
