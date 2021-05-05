@@ -11,11 +11,11 @@
     "start": "ember server",
     "test": "node tests/runner.js"
   },
-  "repository": "https://github.com/kayako/ember-cli-deploy-github-deployment-status",
+  "repository": "https://github.com/achambers/ember-cli-deploy-github-deployment-status",
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "The Kayako Engineering Team",
+  "author": "The EmberCLI Deploy Team",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",

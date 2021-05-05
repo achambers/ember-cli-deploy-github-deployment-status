@@ -29,7 +29,7 @@ describe('Github Deployment Status | didDeploy hook', function() {
       repo: 'bar',
       ref: 'baz',
       token: 'token',
-      targetUrl: 'https://support.kayakostage.net'
+      targetUrl: 'https://ember-cli-deploy.com'
     };
 
     var context = {
@@ -61,7 +61,7 @@ describe('Github Deployment Status | didDeploy hook', function() {
         assert.deepEqual(options.headers, { 'User-Agent': 'foo' });
         assert.deepEqual(options.body, {
           state: 'success',
-          target_url: 'https://support.kayakostage.net',
+          target_url: 'https://ember-cli-deploy.com',
           description: 'Deployed successfully'
         });
       });
@@ -77,7 +77,7 @@ describe('Github Deployment Status | didDeploy hook', function() {
       repo: 'bar',
       ref: 'baz',
       token: 'token',
-      targetUrl: 'https://support.kayakostage.net'
+      targetUrl: 'https://ember-cli-deploy.com'
     };
 
     var context = {

@@ -175,7 +175,7 @@ This plugin has no prerequisites.
 
 - `npm test`
 
-<p align="center"><sub>Made with :heart: by The Kayako Engineering Team</sub></p>
+<p align="center"><sub>Made with :heart: by The EmberCLI Deploy Team</sub></p>
 
 [1]: https://developer.github.com/v3/repos/deployments/ "GitHub Deployments API"
 [2]: http://ember-cli-deploy.com/plugins "Plugin Documentation"
