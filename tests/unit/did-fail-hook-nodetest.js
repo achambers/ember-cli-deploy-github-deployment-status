@@ -3,8 +3,6 @@
 var subject = require('../../index');
 var assert  = require('../helpers/assert');
 
-var Promise = require('ember-cli/lib/ext/promise');
-
 describe('Github Deployment Status | didFail hook', function() {
   var mockUi;
 
