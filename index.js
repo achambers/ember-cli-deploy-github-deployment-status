@@ -16,6 +16,7 @@ module.exports = {
         token: null,
         task: 'deploy',
         autoMerge: false,
+        autoInactive: false,
         requiredContexts: [],
         payload: null,
         environment: 'production',
@@ -36,6 +37,7 @@ module.exports = {
         var ref          = this.readConfig('ref');
         var environment  = this.readConfig('environment');
         var autoMerge    = this.readConfig('autoMerge');
+        var autoInactive = this.readConfig('autoInactive');
         var contexts     = this.readConfig('requiredContexts');
         var payload      = this.readConfig('payload');
 
@@ -50,6 +52,7 @@ module.exports = {
           var body = {
             ref: ref,
             auto_merge: autoMerge,
+            auto_inactive: autoInactive,
             required_contexts: contexts,
             environment: environment,
             description: 'Deploying'
