@@ -76,7 +76,7 @@ describe('Github Deployment Status | willDeploy hook', function() {
           request: function(options) {
             this._options = options;
 
-            return Promise.resolve({ id: '123' });
+            return Promise.resolve({ data: { id: '123' } });
           }
         }
       };
@@ -88,11 +88,10 @@ describe('Github Deployment Status | willDeploy hook', function() {
       return assert.isFulfilled(instance.willDeploy(context))
         .then(function(result) {
           var options = context['github-deployment-status']._client._options;
-          assert.equal(options.uri,'https://api.github.com/repos/foo/bar/deployments');
-          assert.equal(options.method, 'POST');
-          assert.equal(options.json, true);
+          assert.equal(options.url,'https://api.github.com/repos/foo/bar/deployments');
+          assert.equal(options.method, 'post');
           assert.deepEqual(options.headers, { 'User-Agent': 'foo', 'Authorization': 'token token' });
-          assert.deepEqual(options.body, {
+          assert.deepEqual(options.data, {
             ref: 'baz',
             auto_merge: false,
             required_contexts: [],

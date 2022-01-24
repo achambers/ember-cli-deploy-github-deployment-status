@@ -25,7 +25,7 @@ module.exports = {
 
       setup: function(context) {
         context[this.name] = context[this.name] || {};
-        context[this.name]._client = context._fakeRequest || { request: require('request-promise') };
+        context[this.name]._client = context._fakeRequest || { request: require('axios') };
       },
 
       willDeploy: function(context) {
@@ -43,7 +43,7 @@ module.exports = {
         var promise;
 
         if (deploymentId) {
-          promise = Promise.resolve({ id: deploymentId });
+          promise = Promise.resolve({ data: { id: deploymentId } });
         } else {
           var client = context[pluginName]._client;
 
@@ -67,29 +67,28 @@ module.exports = {
             headers['Authorization'] = 'token ' + token;
           }
 
-          var options = {
-            method: 'POST',
-            uri: 'https://api.github.com/repos/' + org + '/' + repo + '/deployments',
-            headers: headers,
-            body: body,
-            json: true
+          let options = {
+            method: 'post',
+            url: `https://api.github.com/repos/${org}/${repo}/deployments`,
+            headers,
+            data: body,
           };
 
           promise = client.request(options);
         }
 
-        return promise.then(function(data) {
-          var response = {};
+        return promise.then(({ data }) => {
+          let response = {};
           response[pluginName] = { deploymentId: data.id };
 
           return response;
-        }, function(reason) {
+        }, (reason) => {
           this.log('Error creating github deployment: ' + reason, { verbose: true, color: 'yellow'});
-          var response = {};
+          let response = {};
           response[pluginName] = { deploymentId: null };
 
           return response;
-        }.bind(this));
+        });
       },
 
       didDeploy: function(context) {
@@ -131,14 +130,16 @@ module.exports = {
             headers['Authorization'] = 'token ' + token;
           }
 
-          var options = {
-            method: 'POST',
-            uri: 'https://api.github.com/repos/' + org + '/' + repo + '/deployments/' + id + '/statuses',
-            headers: headers,
-            body: body,
-            json: true
+          let options = {
+            method: 'post',
+            url: `https://api.github.com/repos/${org}/${repo}/deployments/${id}/statuses`,
+            headers,
+            data: body,
           };
-          return client.request(options);
+
+          return client.request(options).then(({ data }) => {
+            return data;
+          });
         }
 
         return Promise.resolve();

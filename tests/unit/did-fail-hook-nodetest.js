@@ -17,7 +17,7 @@ describe('Github Deployment Status | didFail hook', function() {
     };
   });
 
-  it('updates the deploment status on failure', function() {
+  it('updates the deployment status on failure', function() {
     var instance = subject.createDeployPlugin({
       name: 'github-deployment-status'
     });
@@ -39,8 +39,7 @@ describe('Github Deployment Status | didFail hook', function() {
       _fakeRequest: {
         request: function(options) {
           this._options = options;
-
-          return Promise.resolve();
+          return Promise.resolve({ data: { id: '123' } });
         }
       }
     };
@@ -52,11 +51,10 @@ describe('Github Deployment Status | didFail hook', function() {
     return assert.isFulfilled(instance.didFail(context))
       .then(function() {
         var options = context['github-deployment-status']._client._options;
-        assert.equal(options.uri,'https://api.github.com/repos/foo/bar/deployments/123/statuses');
-        assert.equal(options.method, 'POST');
-        assert.equal(options.json, true);
+        assert.equal(options.url,'https://api.github.com/repos/foo/bar/deployments/123/statuses');
+        assert.equal(options.method, 'post');
         assert.deepEqual(options.headers, { 'User-Agent': 'foo', 'Authorization': 'token token' });
-        assert.deepEqual(options.body, {
+        assert.deepEqual(options.data, {
           state: 'failure',
           target_url: 'https://ember-cli-deploy.com',
           description: 'Deploy failed'
