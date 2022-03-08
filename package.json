@@ -23,8 +23,7 @@
     "ember-cli": "~3.26.1",
     "glob": "^7.1.7",
     "mocha": "^3.1.0",
-    "mocha-jshint": "^2.3.1",
-    "request": "^2.75.0"
+    "mocha-jshint": "^2.3.1"
   },
   "keywords": [
     "ember-addon",
@@ -33,7 +32,7 @@
   "dependencies": {
     "ember-cli-babel": "^7.26.6",
     "ember-cli-deploy-plugin": "0.2.9",
-    "request-promise": "^4.2.6"
+    "axios": "^0.25.0"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
