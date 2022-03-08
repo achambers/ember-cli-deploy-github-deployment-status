@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-deploy-github-deployment-status",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "An EmberCLI Deploy plugin to update the deployment status of a commit",
   "directories": {
     "doc": "doc",
